@@ -1,5 +1,10 @@
 <template>
-<div>
+<div class="relative md:max-auto">
+  <div> 
+    <span class="decoration-clone md:decoration-slice">
+      Hello World
+    </span>
+  </div>
   <div v-if="this.$store.state.login" >
       <div v-if="this.$store.state.fade" id="sidebar" class="md:min-h-full absolute bottom-0 right-0">
             <Participant/>
@@ -13,7 +18,7 @@
       </div>
   </div>
 
-  <div v-else><login/></div>
+  <div v-else class="float-right h-2/6 w-2/6"><login/></div>
 
   </div>
 </template>

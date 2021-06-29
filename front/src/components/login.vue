@@ -1,11 +1,9 @@
 <template>
-  <div ref="trancelogin" id="login" class="max-w-sm md:max-w-full min-w-xl min-h-full login">
+  <div ref="trancelogin" class="login">
     <div class="login-icon-field">
        <img src="/image/logo.png"/>
-    </div>
-
-      <div ref="trancerow" class="username-row static">
-        
+    </div> 
+      <div ref="trancerow" class="username-row static"> 
         <svg version="1.1" class="user-icon  inline-block md:h-32 md:w-1/10"
         viewBox="-255 347 100 100" xml:space="preserve" >
           <path class="user-path" d="
@@ -17,7 +15,7 @@
         <input  class="md:w-5/6 inline-block md:text-5xl focus:outline-none focus:shadow-outline rounded-lg border-b border-b-2 border-teal-500" type="text" v-model="textInput" id="username_input"  placeholder="Username"/>
       </div>
 
-    <div class="flex justify-center absolute inset-x-0 bottom-0 ">
+    <div class="flex justify-center inset-x-0 bottom-0 ">
       <button id="button" class="bg-Pink-500 md:text-5xl text-base hover:bg-Pink-700 text-white font-bold rounded-full" type="button" @keyup.enter="enter" @click.prevent="enter">Log In</button>
     </div>   
 </div>
@@ -84,13 +82,11 @@ export default {
   transition: all .3s ease;
 }
 
-.login {
-  padding: 1px 0;
+.login { 
   border-bottom-left-radius:10px;
   border-bottom-right-radius:10px;
   border-top-left-radius:10px;
   border-top-right-radius:10px;
-  margin: 30px auto;
   background-image: linear-gradient(to bottom, rgb(70, 62, 65), rgb(187, 137, 104));
 }
 
