@@ -1,0 +1,7 @@
+dist/
+node_modules/
+ngrok.exe
+DialogFlow_key.json
+uploads
+.env
+ngrok.exe
