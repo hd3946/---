@@ -38,7 +38,11 @@ Dialogflow 대화 스트립 기획 | 이동현(팀원) | [ehdgus336@naver.com]
 - https://user-images.githubusercontent.com/28784435/123940519-39be5080-d9d4-11eb-951e-d8d87ef28142.mp4
 * 최종 시연
 
-https://user-images.githubusercontent.com/28784435/123940537-3dea6e00-d9d4-11eb-96fb-f581c38d1cf0.mp4
+
+
+https://user-images.githubusercontent.com/28784435/123941870-8bb3a600-d9d5-11eb-904d-8bbd08313652.mp4
+
+
 
 #### 결과 보고서
 
