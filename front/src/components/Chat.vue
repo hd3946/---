@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-full h-full">
       <Header class="message-header"/>
       <MessageDisplay :colors="colors" class="message-display"/>
       <MessageInput class="message-input"/>

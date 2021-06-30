@@ -1,25 +1,26 @@
 <template>
-<div class="relative md:max-auto">
+<div class="md:container md:mx-auto">
   <div> 
-    <span class="decoration-clone md:decoration-slice">
+    <span class="md:decoration-slice">
       Hello World
     </span>
   </div>
-  <div v-if="this.$store.state.login" >
+  <div class="float-left h-full w-4/6">
+     <img src="/image/imagetest.gif"/>
+  </div>
+  <div v-if="this.$store.state.login==false" class="float-right w-2/6 h-screen p-6">
       <div v-if="this.$store.state.fade" id="sidebar" class="md:min-h-full absolute bottom-0 right-0">
-            <Participant/>
+        <Participant/>
       </div>
-      <div class="chat-container md:max-w-full max-h-full">
+      <div calss="w-full">
         <Chat
         :messages="messages"
         :onMessageSubmit="onMessageSubmit"
         :colors="colors">
         </Chat>
       </div>
-  </div>
-
-  <div v-else class="float-right h-2/6 w-2/6"><login/></div>
-
+  </div> 
+    <div v-else class="float-right w-2/6 h-screen p-6"><login/></div> 
   </div>
 </template>
 
@@ -150,8 +151,6 @@ export default {
 #sidebar {
   background: #bbb7b7;
   opacity: 0.8;
-  display: block;
-  /* display: none; */
-  width:70%
+  display: block;  
 }
 </style>

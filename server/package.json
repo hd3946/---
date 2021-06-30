@@ -4,10 +4,9 @@
   "description": "create chatbot with (Vue.js + node.js)",
   "main": "index.js",
   "scripts": {
-    "build": "babel src -d dist",
-    "serve": "node dist/index.js",
+    "build": "babel src -d dist",  
     "dev": "nodemon --exec babel-node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1" 
   },
   "author": "",
   "license": "ISC",

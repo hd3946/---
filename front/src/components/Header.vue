@@ -1,13 +1,14 @@
 <template>
-    <div class="header-container md:max-w-full flex">
+    <div class="header-container rounded-tl-lg rounded-r-lg flex">
         
-        <div class="container-menu inline-flex" @click.prevent="userlist">
-           <v-icon class="w-2/4" name="menu" :style="{color: 'white'}"></v-icon>  
+        <div class="flex" @click.prevent="userlist">
+           <v-icon class="w-12" name="menu" :style="{color: 'white'}"></v-icon>  
         </div>
             
-        <div class="header-title italic flex-1 text-5xl">
-            <p class="title" :style="{color: 'white'}">IDOL CHAT BOT</p>
+        <div class="flex ml-8 text-2xl">
+            <p class="w-auto center" :style="{color: 'white'}">IDOL CHAT BOT</p>
         </div>
+
     </div>
 </template>
 <script>
@@ -32,8 +33,7 @@
 </script>
 
 <style scoped>
-    .header-container{
-        border-top-right-radius: 5rem;
+    .header-container{ 
         background-image: linear-gradient(to right, #FF5FA2, #FCC89B);
         align-items: center;
         -webkit-box-shadow:  0 2px 20px 2px rgba(90, 90, 90, 0.47);

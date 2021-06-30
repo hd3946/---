@@ -1,15 +1,15 @@
 <template>
     <div class="container-message-manager w-full flex">
         <div class="container-send-message inline-flex" @click="chooseFiles()" >
-            <v-icon name="upload" class="w-16" base-class="icon-send-message" :style="{color: 'red'}"></v-icon>
+            <v-icon name="upload" class="box-border w-12" base-class="icon-send-message" :style="{color: 'red'}"></v-icon>
             <input type="file" ref="file" id="fileUpload" name="file" class="img-button" @change="fileupload" accept="image/*" hidden>
         </div>
         <div class="message-text-box inline-flex w-full flex-1">
-            <input  class="message-input w-full text-5xl" :placeholder="placeholder" tabIndex="0" contenteditable="true" 
+            <input  class="message-input w-full text-1xl" :placeholder="placeholder" tabIndex="0" contenteditable="true" 
             v-model="textInput"  @keyup.enter="sendMessage"/>
         </div>
         <div class="container-send-message" @click.prevent="sendMessage">
-            <v-icon name="send" class="w-16" base-class="icon-send-message" :style="{color: 'red'}"></v-icon>
+            <v-icon name="send" class="w-12" base-class="icon-send-message" :style="{color: 'red'}"></v-icon>
         </div>
     </div>    
 </template>

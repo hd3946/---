@@ -22,7 +22,7 @@ const io = require('socket.io')(server);
 
 app.use(cors());
 app.use(cookieParser());
-app.use(express.static('dist'));
+//app.use(express.static('dist'));   //정적 파일 제공 
 
 //이미지파일 업로드
 app.post('/upload', upload.single('file'), function(req, res){

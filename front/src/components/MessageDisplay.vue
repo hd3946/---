@@ -1,19 +1,25 @@
 <template>
     <div ref="containerMessageDisplay" :style="{background: colors.message.messagesDisplay.bg}" class="container-message-display" @scroll="updateScrollState">
         <div v-for="(message, index) in messages" :key="index" class="message-container" :class="{'my-message': getParticipantById(message.participantId).id == 2, 'other-message': getParticipantById(message.participantId).id != 2}">
-            <p v-if="getParticipantById(message.participantId).id != 2" class="message-username text-4xl">{{getParticipantById(message.participantId).name}}</p>
-            <div v-if="message.viewed == 'photo'" class="w-full h-1/2">
-             <imageDisplay :imagedata="message"/>
+            <!-- 닉네임 -->
+            <p v-if="getParticipantById(message.participantId).id != 2" class="message-username text-sm">
+                {{getParticipantById(message.participantId).name}}
+            </p>
+            <div v-if="message.viewed == 'photo'" class="w-full h-32">
+                <imageDisplay :imagedata="message"/>
             </div>
-            <div v-else-if="message.viewed == 'twit'">
+            <!-- 트위터 -->
+            <div v-else-if="message.viewed == 'twit'" class="w-full h-auto p-2">
                 <twitDisplay :imagedata="message"/>
             </div>
+            <!-- 메시지 -->
             <div v-else class="message-text" :style="{background: getParticipantById(message.participantId).id != 2?colors.message.others.bg: colors.message.myself.bg}">
-                <p class="text-5xl">{{message.content}}</p>           
+                <p class="text-1xl">{{message.content}}</p>           
             </div>
-            <div class="message-timestamp text-3xl" :style="{'justify-content': getParticipantById(message.participantId).id != 2?'baseline':'flex-end'}">
+            <!-- 시간 -->
+            <div class="message-timestamp text-xs" :style="{'justify-content': getParticipantById(message.participantId).id != 2?'baseline':'flex-end'}">
                 {{ message.timestamp.format('LT') }}
-                <v-icon name="check" base-class="icon-sent"></v-icon>      
+                <v-icon class="w-4 ml-2" name="check" base-class="icon-sent"></v-icon>      
             </div>
         </div>
     </div>
@@ -85,7 +91,6 @@ export default {
     display: flex;
     flex-direction: column;
     padding-bottom: 10px;
-    max-height: 100%;
 }
 .message-text{
     background: #fff;
@@ -103,10 +108,8 @@ export default {
     height: 100%;
 }
 
-.message-timestamp{
-    padding: 2px 7px;
-    border-radius: 15px;
-    margin: 0;
+.message-timestamp{ 
+    border-radius: 15px; 
     max-width: 50%;
     overflow-wrap: break-word;
     text-align: left;
@@ -119,6 +122,7 @@ export default {
 .my-message >.message-timestamp{
     text-align: right;
 }
+
 
 .my-message{
     justify-content: flex-end;
@@ -150,8 +154,6 @@ export default {
     font-weight: bold;
 }
 .icon-sent{
-    width: 12px;
-    padding-left: 5px;
     color: rgb(129, 127, 127);
 }
 
