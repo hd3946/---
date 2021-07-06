@@ -100,8 +100,10 @@ io.on('connection', (socket) => {
 
     io.emit('userlist',{
       userid: Object.keys(socket_ids),
-      username: Object.values(socket_ids) 
-    });     //  변경
+      username: Object.values(socket_ids)
+      //test:socket.id
+    });    
+    //  변경
     console.log("몇명이여",socket_ids);
     socket.on('changename',(nickname) => {   
       registerUser(socket,nickname.data);
