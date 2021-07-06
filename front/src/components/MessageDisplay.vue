@@ -1,9 +1,9 @@
 <template>
     <div ref="containerMessageDisplay" :style="{background: colors.message.messagesDisplay.bg}" class="container-message-display" @scroll="updateScrollState">
-        <div v-for="(message, index) in messages" :key="index" class="message-container" :class="{'my-message': getParticipantById(message.participantId).id == 2, 'other-message': getParticipantById(message.participantId).id != 2}">
+        <div v-for="(message, index) in messages" :key="index" class="message-container" :class="{'my-message': getParticipantById(message.participantId).id == getMyUserId, 'other-message': getParticipantById(message.participantId).id != getMyUserId}">
             <!-- 닉네임 -->
-            <p v-if="getParticipantById(message.participantId).id != 2" class="message-username text-sm">
-                {{getParticipantById(message.participantId).name}}
+            <p v-if="getParticipantById(message.participantId).id != getMyUserId" class="message-username text-sm">
+                {{getParticipantById(message.participantId).name }}
             </p>
             <div v-if="message.viewed == 'photo'" class="w-full h-32">
                 <imageDisplay :imagedata="message"/>
@@ -13,11 +13,11 @@
                 <twitDisplay :imagedata="message"/>
             </div>
             <!-- 메시지 -->
-            <div v-else class="message-text" :style="{background: getParticipantById(message.participantId).id != 2?colors.message.others.bg: colors.message.myself.bg}">
+            <div v-else class="message-text" :style="{background: getParticipantById(message.participantId).id != getMyUserId ?colors.message.others.bg: colors.message.myself.bg}">
                 <p class="text-1xl">{{message.content}}</p>           
             </div>
             <!-- 시간 -->
-            <div class="message-timestamp text-xs" :style="{'justify-content': getParticipantById(message.participantId).id != 2?'baseline':'flex-end'}">
+            <div class="message-timestamp text-xs" :style="{'justify-content': getParticipantById(message.participantId).id != getMyUserId?'baseline':'flex-end'}">
                 {{ message.timestamp.format('LT') }}
                 <v-icon class="w-4 ml-2" name="check" base-class="icon-sent"></v-icon>      
             </div>
@@ -51,11 +51,12 @@ export default {
         ...mapGetters([
             'getParticipantById',
             'messages',
-            'getparticipants'
+            'getparticipants',
+            'getMyUserId'
         ]),
     },
     created(){
-
+        console.log("message값확인", this.messages);
     },
     mounted() {
         this.goToBottom();

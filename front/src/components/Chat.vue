@@ -9,10 +9,9 @@
 import Header from './Header.vue'
 import MessageDisplay from './MessageDisplay.vue'
 import MessageInput from './MessageInput.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations,mapActions,mapGetters } from 'vuex'
 import store from '../store'
-import * as moment from 'moment';
-import { mapGetters } from 'vuex';
+import * as moment from 'moment'; 
 
 export default {
     name: 'Chat',
@@ -22,121 +21,77 @@ export default {
         MessageDisplay,
         MessageInput,
     },
-    props: {    
-        messages: {
-            type: Array,
-            required: true
-        },
+    props: { 
         colors: {
             type: Object,
             required: true
         },    
-    },
+    },  
     methods: {
         ...mapMutations([
             'setParticipants',
             'setMessages',
-            'setPlaceholder',
-            'setChatTitle',
-             'newMessage',
-        ]),
-    },
-    watch: {
-        messages: function(){
-            this.setMessages(this.messages);
-        },
-    },
+            'setPlaceholder', 
+            'newMessage',
+            'setMyUserId',
+            'setChatBotMessage'
+        ])
+    }, 
     data() {  // data
         return {         
             socket:this.$store.state.socket,
             newmsg:[],
-            participants:[]
+            participants:[], 
         };
     },
-    created(){
-    this.setChatTitle(this.chatTitle);  //타이틀 셋팅
-    let first =[
-                {
-                    name: 'TWICE',
-                    id: 1
-                }, 
-                {
-                    name: 'ME',
-                    id: 2
-                },      
-              ]
-      this.participants = first;
-      this.setParticipants(this.participants);   
+    created(){ 
       this.socket.on("userlist",(data) =>{
-      let first =[
-                {
-                    name: 'TWICE',
-                    id: 1
-                }, 
-                {
-                    name: 'ME',
-                    id: 2
-                },      
-              ]
+      const first =[
+            {
+                name: 'Chat-Bot',
+                id: 1
+            }     
+        ]
       this.participants = first;
-            for(var i=0;i<data.userid.length;i++){
-                let myid = data.userid[i];
-                let myname = data.username[i];
-                let participant = {
-                    id: myid,
-                    name: myname,
-                }
-                this.participants.push(participant);
-              }
-        this.setParticipants(this.participants);     
-        console.log("안돼제발",this.participants);                
+        for(var i=0;i<data.userid.length;i++){
+            const myid = data.userid[i];
+            const myname = data.username[i];
+            const participant = {
+                id: myid,
+                name: myname,
+            }
+            this.participants.push(participant);
+
+        }
+        this.setMyUserId(this.socket.id);   //My소켓ID 설정
+        this.setParticipants(this.participants);   // 참가자 추가   
+        console.log('msg received from server',this.participants); 
     });
       
         //닉네임 서버로 전송2
         this.socket.on("newUser", name => { 
-            var enterMsg = name + '님이 입장하셨습니다.';
-            
-             var system_message =  
-            {
-                content: enterMsg, 
-                participantId: 1,        //구분
-                timestamp: moment(),
-                viewed: false
-            }
+            const enterMsg = name + '님이 입장하셨습니다.'; 
+            this.setChatBotMessage(enterMsg); 
+            const system_message = this.$store.state.message;  
             this.newMessage(system_message);  
         });   
         
         this.socket.on("chat-message", (data) => { // when "chat-message" comes from the server             
-            console.log('msg received from server',data);
-            
-            this.newmsg.push(data.data);
-         
+            console.log('msg received from server',data); 
+            this.newmsg.push(data.data); 
             data.data.timestamp = moment();     
-            this.newMessage(data.data);
-  
+            this.newMessage(data.data); 
         });
         this.socket.on("bot-message", name => { 
-            var outMsg = name.message;
-            console.log(outMsg);
-             var system_message =  
-            {
-                content: outMsg, 
-                participantId: 1,        //구분
-                timestamp: moment(),
-                viewed: false
-            }
-            this.newMessage(system_message);  
+            const Msg = name.message; 
+            this.setChatBotMessage(Msg); 
+            const system_message = this.$store.state.message;  
+            this.newMessage(system_message);    
         });
         this.socket.on("disconnect", name => { 
-            var outMsg = name + '님이 나가셧습니다.';
-        
-             var system_message =  
-            {
-                content: outMsg, 
-                participantId: 1,        //구분
-                timestamp: moment(),
-                viewed: false
-            }
+            const outMsg = name + '님이 나가셧습니다.';
+            this.setChatBotMessage(outMsg); 
+            const system_message = this.$store.state.message;   
             this.newMessage(system_message);  
         });   
     },

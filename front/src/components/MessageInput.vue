@@ -21,12 +21,7 @@ import io from 'socket.io-client';
 
 export default {
     name:'MessageInput',
-    props:{
-        onMessageSubmit: {
-            type: Function,
-            required: false,
-            default: () => false
-        },
+    props:{ 
     },
     data(){
         return {
@@ -35,8 +30,7 @@ export default {
         }
     },
     created(){
-        this.socket.on("typo",(data) =>{
-            console.log("?",data)
+        this.socket.on("typo",(data) =>{ 
             this.$store.state.typostate = data.data;
         });
         //사진 출력
@@ -78,11 +72,7 @@ export default {
         })
         moment.locale('pt-br')
     },
-    computed: {
-        ...mapGetters([
-            'gettypo',
-            'getparticipants',
-        ]),
+    computed: { 
         placeholder: function(){
             return this.$store.state.placeholder;
         },
@@ -109,7 +99,7 @@ export default {
             'messages',
             'setMessages',
             'newarrayMessages',
-            'setParticipants'
+            'setParticipants',
         ]),
         fileupload(e){
             //console.log(e);
@@ -135,8 +125,9 @@ export default {
                     inputText = inputText.slice(0, inputLen-1)
                 }
                 let message = {
+                    name:"DDong",
                     content: inputText, 
-                    participantId: 2,
+                    participantId: this.$store.state.curr_user,
                     timestamp: moment(),
                     uploaded: false,
                     viewed: false
@@ -150,8 +141,7 @@ export default {
                 this.socket.emit("chat-message", {
                     data: message        
                 });
-                
-                this.onMessageSubmit(message);
+                 
                 this.newMessage(message);
                 
             }

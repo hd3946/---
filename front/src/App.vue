@@ -2,20 +2,18 @@
 <div class="md:container md:mx-auto">
   <div> 
     <span class="md:decoration-slice">
-      Hello World
+        Hello World
     </span>
   </div>
   <div class="float-left h-full w-4/6">
      <img src="/image/imagetest.gif"/>
   </div>
-  <div v-if="this.$store.state.login==false" class="float-right w-2/6 h-screen p-6">
-      <div v-if="this.$store.state.fade" id="sidebar" class="md:min-h-full absolute bottom-0 right-0">
+  <div v-if="this.$store.state.login==true" class="float-right w-2/6 h-screen p-6">
+      <div v-if="this.$store.state.fade" id="sidebar">
         <Participant/>
       </div>
       <div calss="w-full">
-        <Chat
-        :messages="messages"
-        :onMessageSubmit="onMessageSubmit"
+        <Chat  
         :colors="colors">
         </Chat>
       </div>
@@ -28,7 +26,6 @@
 import Chat from './components/Chat.vue'
 import login from './components/login'
 import Participant from './components/participaint'
-import moment from 'moment'
 import twitDisplay from './components/twitDisplay'
 
 export default {
@@ -38,20 +35,9 @@ export default {
     login,
     Participant,
     twitDisplay
-  },
-  created(){
-       
-  },
+  }, 
   data(){
-    return {
-      messages: [
-        {
-          content: "안녕~안녕~ 트둥이입니다.~ 만나서 반가워요", 
-          participantId: 1,
-          timestamp : moment(),
-          viewed: false       //텍스트 및 이미지 구분
-        },
-      ],
+    return { 
       styleObject: {
          display: 'none',
       },
@@ -72,14 +58,7 @@ export default {
       },
     }
   },
-  methods: {
-    onMessageSubmit(message){
-      this.messages.push(message);
-      setTimeout(() => {
-        message.uploaded = true
-      }, 2000)
-    },
-    
+  methods: { 
     isSupportNotification () {
       return process.browser && window && 'Notification' in window;
     },
@@ -105,6 +84,8 @@ export default {
       });
     }
   },
+
+  //나중에 위치 전송
   createForegroundNotification (title, { body }) {
     const notification = new Notification(title, {
     body,
@@ -117,31 +98,31 @@ export default {
     console.error(e);
   };
   },
-      getGeo() {
-        if (!this.isSupportNotification()){
-          return;
-        }
-        this.getNotificationPermission();
-        if (!this.isAllowNotification) {
-          return;
-        }
-        console.log("실행");
-            if (Notification.permission !== 'granted') {
-                alert('notification is disabled');
-            }
-            else {
-                var notification = new Notification('Notification title', {
-                    body: 'Notification text',
-                });
- 
-                notification.onclick = function () {
-                    window.open('http://google.com');
-                };
-            }
-      this.createForegroundNotification('님이 메세지를 보냈어요.', {
-        body: "보내지는건가",
-    });
-  },
+    getGeo() {
+      if (!this.isSupportNotification()){
+        return;
+      }
+      this.getNotificationPermission();
+      if (!this.isAllowNotification) {
+        return;
+      }
+      console.log("실행");
+          if (Notification.permission !== 'granted') {
+              alert('notification is disabled');
+          }
+          else {
+              var notification = new Notification('Notification title', {
+                  body: 'Notification text',
+              });
+
+              notification.onclick = function () {
+                  window.open('http://google.com');
+              };
+          }
+    this.createForegroundNotification('님이 메세지를 보냈어요.', {
+      body: "보내지는건가",
+  });
+},
 }
 }
 </script>
@@ -149,8 +130,10 @@ export default {
 <style>
 
 #sidebar {
-  background: #bbb7b7;
-  opacity: 0.8;
-  display: block;  
+  position: absolute;
+  top: 10%;
+  left: 72%;
+  width: 25%; 
+  background: #fcfafa;
 }
 </style>

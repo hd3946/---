@@ -52,13 +52,6 @@ export default {
     Velocity(rows,"transition.slideLeftIn",{stagger: 500});
   },
   methods: {
-     ...mapMutations([
-            'setParticipants',
-            'setMessages',
-            'setPlaceholder',
-            'setChatTitle',
-             'newMessage',
-        ]),
     enter(el, done) {
       let divs = this.$refs.trancerow;
       if((this.textInput == '') && (this.textInput.length == 0)){
