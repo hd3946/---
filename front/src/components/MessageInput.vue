@@ -16,8 +16,7 @@
 <script>
 import { mapMutations,mapGetters } from 'vuex';
 import axios from 'axios';
-import moment from 'moment';
-import io from 'socket.io-client';
+import moment from 'moment'; 
 
 export default {
     name:'MessageInput',
@@ -36,12 +35,12 @@ export default {
         //사진 출력
         this.socket.on('searchidol', db => {
            
-            let image = [];
+            const image = [];
             db.map(x => {
                 image.push(x.URL)
             });
 
-            let message = {
+            const message = {
                     content: image, 
                     participantId: 1,
                     timestamp: moment(),
@@ -54,25 +53,25 @@ export default {
         //트위터
         this.socket.on('twit-message', data => {
             
-            var db = data.message;
-            let message = {
-                    content: db.text, 
-                    participantId: 1,
-                    timestamp: moment(),
-                    created_at: db.created_at,       //추가되는 변수
-                    description: db.description,
-                    media_url:db.media_url,
-                    url: db.url,
-                    username: db.name,
-                    profile_image: db.profile_image,
-                    viewed: "twit"
-                }        
-            console.log(message);
+            const db = data.message;
+            const message = {
+                content: db.text, 
+                participantId: 1,
+                timestamp: moment(),
+                created_at: db.created_at,       //추가되는 변수
+                description: db.description,
+                media_url:db.media_url,
+                url: db.url,
+                username: db.name,
+                profile_image: db.profile_image,
+                viewed: "twit"
+            }       
+            //console.log(message);
             this.newMessage(message);              
         })
         moment.locale('pt-br')
     },
-    computed: { 
+    computed: {  
         placeholder: function(){
             return this.$store.state.placeholder;
         },
@@ -93,22 +92,23 @@ export default {
             }           
         }
     },
-    methods: {
+    methods: { 
         ...mapMutations([
             'newMessage',
             'messages',
             'setMessages',
             'newarrayMessages',
             'setParticipants',
+            'setUserMessage',
+            'setChatBotMessage'
         ]),
-        fileupload(e){
-            //console.log(e);
+        fileupload(e){ 
             const formData = new FormData();
             formData.append('file',this.$refs.file.files[0]);
-            console.log(this.$refs.file.files[0]);
+            //console.log(this.$refs.file.files[0]);
             try{
                 axios.post('http://localhost:3000/upload', formData);
-                //axios.post('https://fc02ebac.ngrok.io/upload', formData);              
+                //axios.post('https://fc02ebac.ngrok.io/upload', formData);  //외부 접속        
             }
             catch(err){
                 console.log(err);
@@ -124,14 +124,18 @@ export default {
                 if(this.textInput[inputLen-1] == '\n'){
                     inputText = inputText.slice(0, inputLen-1)
                 }
-                let message = {
-                    name:"DDong",
+                const message = {
+                    name:"",
                     content: inputText, 
-                    participantId: this.$store.state.curr_user,
+                    participantId: this.$store.state.curr_userID,
                     timestamp: moment(),
                     uploaded: false,
                     viewed: false
                 }
+                // 메시지를 새로운 각 객체로 만드는 방법 =>  변경 문제
+                //this.setUserMessage(inputText);
+                //const user_message = this.$store.state.message; 
+                
                 this.$store.state.typostate = null;
                 this.textInput = null;
                 this.socket.emit("typo", {
@@ -177,14 +181,7 @@ export default {
     overflow-y: auto;
     text-align: left;
     cursor: text;
-}
-
-/* .message-input:empty:before {
-  content: attr(placeholder);
-  display: block; 
-  filter: contrast(15%);
-  outline: none;
-} */
+} 
 
 .message-input:focus{
     outline: none;

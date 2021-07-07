@@ -48,11 +48,11 @@ methods: {
             this.socket.emit("changename", {
                 data: this.nameInput           //서버로 전송
             });
-             this.nameInput = null;
-             this.texting = 0;   
+            this.nameInput = null;
+            this.texting = 0;   
         }
         if(this.nameInput == null){
-                this.texting = -1;
+            this.texting = -1;
         }      
         
     }

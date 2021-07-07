@@ -1,11 +1,14 @@
 <template>
     <div ref="containerMessageDisplay" :style="{background: colors.message.messagesDisplay.bg}" class="container-message-display" @scroll="updateScrollState">
-        <div v-for="(message, index) in messages" :key="index" class="message-container" :class="{'my-message': getParticipantById(message.participantId).id == getMyUserId, 'other-message': getParticipantById(message.participantId).id != getMyUserId}">
+        <div v-for="(message, index) in messages" :key="index" 
+        class="message-container" 
+        :class="getParticipantById(message.participantId).id== getMyUserId ? 'my-message' : 'other-message'">      
             <!-- 닉네임 -->
             <p v-if="getParticipantById(message.participantId).id != getMyUserId" class="message-username text-sm">
                 {{getParticipantById(message.participantId).name }}
             </p>
-            <div v-if="message.viewed == 'photo'" class="w-full h-32">
+            <!-- DB 사진 -->
+            <div v-if="message.viewed == 'photo'" class="w-full h-auto p-2">
                 <imageDisplay :imagedata="message"/>
             </div>
             <!-- 트위터 -->
@@ -38,7 +41,8 @@ export default {
     data(){
         return {
             updateScroll: false,
-            lastMessage: null
+            lastMessage: null,
+            loading: false
         }
     },
     props:{

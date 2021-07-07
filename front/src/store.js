@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     ChatBotName:'Chat-Bot',
     fade:false,
-    curr_user:null,  //현재 유저        
+    curr_userID:'',
+    curr_user:'',  //현재 유저        
     messages: [],
     message:{
       name: '',
@@ -28,10 +29,10 @@ export default new Vuex.Store({
   },
   mutations: {
     //현재 내아이디 셋팅
-    setMyUserId: (state, id) => {
-      state.curr_user = id
+    setMyUserId: (state, id) => { 
+      state.curr_userID = id
     },
-    //메시지 객체 설정
+    //챗봇 메시지 객체 설정
     setChatBotMessage: (state, content) =>{  
       state.message.name =  state.ChatBotName,
       state.message.content = content, 
@@ -40,20 +41,32 @@ export default new Vuex.Store({
       state.message.uploaded = false,
       state.message.viewed = false 
     },
+    //유저 메시지 객체 설정
+    setUserMessage: (state, content) => {
+      state.message.name =  state.curr_user,
+      state.message.content = content, 
+      state.message.participantId = state.curr_userID,
+      state.message.timestamp = moment(),
+      state.message.uploaded = false,
+      state.message.viewed = false 
+    },
     newMessage: (state, message) => {
       //message.timestamp = message.timestamp.toISOString();
       state.messages = [...state.messages, message];
     },
+    //참석자 셋팅
     setParticipants: (state, participants) => {
       state.participants = participants;  
     },
-    newarrayMessages: (state, message) => {  //여러 메시지 저장
+    //여러 메시지 저장
+    newarrayMessages: (state, message) => {  
       message.map(message => {
         message.timestamp = moment(message.timestamp).toISOString();
         state.messages = [...state.messages, message];
       })
     },
-    setMessages: (state, messages) => {  //초기 메시지 저장
+     //초기 메시지 저장
+    setMessages: (state, messages) => { 
       messages.map(message => {
         message.timestamp = moment(message.timestamp).toISOString();
       })
@@ -63,6 +76,7 @@ export default new Vuex.Store({
       state.placeholder = placeholder;
     }
   },
+  //TEST 비동기 처리
   actions: { 
     asyncsetMessage: (context) => { 
       return setTimeout(() => {
@@ -71,8 +85,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    //내 ID 확인
     getMyUserId(state) {
-      return state.curr_user;
+      return state.curr_userID;
     },
     // 참가자 인원 목록
     getparticipants(state) {
@@ -84,12 +99,14 @@ export default new Vuex.Store({
       let now = state.participants.length-1;   
       return now;
     },
+    //타이핑 유저 확인
     gettypo(state) {
       let now = state.typostate;
       return now;
     },
+    //해당 아이디 => 닉네임 찾기
     getParticipantById: (state) => (id) => {
-      let curr_participant;
+      let curr_participant = '';
       state.participants.forEach(participant => {
         if(participant.id == id){
           curr_participant = participant;

@@ -16,19 +16,13 @@ import 'vueperslides/dist/vueperslides.css';
             },
 		},
 		created(){
-			console.log("test",this.imagedata.content);
+			//console.log("test",this.imagedata.content);
  		},
 		data(){
 			return {
 			
 			}
-    	},
-        computed: {
-           
-        },
-        methods: {
-           
-        }
+    	}, 
     }
 </script>
 
