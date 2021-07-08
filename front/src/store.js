@@ -34,21 +34,36 @@ export default new Vuex.Store({
     },
     //챗봇 메시지 객체 설정
     setChatBotMessage: (state, content) =>{  
-      state.message.name =  state.ChatBotName,
-      state.message.content = content, 
-      state.message.participantId = 1,
-      state.message.timestamp = moment(),
-      state.message.uploaded = false,
-      state.message.viewed = false 
+      state.messages.push({
+        name : state.ChatBotName,
+        content : content, 
+        participantId : 1,
+        timestamp : moment(),
+        uploaded : false,
+        viewed : false 
+      });
     },
     //유저 메시지 객체 설정
     setUserMessage: (state, content) => {
-      state.message.name =  state.curr_user,
-      state.message.content = content, 
-      state.message.participantId = state.curr_userID,
-      state.message.timestamp = moment(),
-      state.message.uploaded = false,
-      state.message.viewed = false 
+      state.messages.push({
+        name : state.curr_user,
+        content : content, 
+        participantId : state.curr_userID,
+        timestamp : moment(),
+        uploaded : false,
+        viewed : false 
+      });
+    },
+    //상대방 유저 메시지 객체 설정
+    setOtherUserMessage: (state, data) => {
+      state.messages.push({
+        name : state.curr_user,
+        content : data.content, 
+        participantId : data.id,
+        timestamp : moment(),
+        uploaded : false,
+        viewed : false 
+      });
     },
     newMessage: (state, message) => {
       //message.timestamp = message.timestamp.toISOString();

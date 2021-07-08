@@ -58,11 +58,11 @@ const request = {
   }
 };
 
-    const responses = await sessionClient.detectIntent(request);
-    return responses[0];
+  const responses = await sessionClient.detectIntent(request);
+  return responses[0];
 } 
 
-var isEmpty = function(value){ 
+const isEmpty = function(value){ 
   if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){
     return true 
     }
@@ -72,7 +72,7 @@ var isEmpty = function(value){
 };
 
 
-
 export default tryDF;
+
 
 

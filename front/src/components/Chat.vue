@@ -34,7 +34,8 @@ export default {
             'setPlaceholder', 
             'newMessage',
             'setMyUserId',
-            'setChatBotMessage'
+            'setChatBotMessage',
+            'setOtherUserMessage'
         ])
     }, 
     data() {  // data
@@ -64,35 +65,30 @@ export default {
 
         }
         this.setMyUserId(this.socket.id);   //My소켓ID 설정
-        this.setParticipants(this.participants);   // 참가자 추가   
-        console.log('msg received from server',this.participants); 
+        this.setParticipants(this.participants);   // 참가자 추가    
     });
       
         //닉네임 서버로 전송2
         this.socket.on("newUser", name => { 
             const enterMsg = name + '님이 입장하셨습니다.'; 
-            this.setChatBotMessage(enterMsg); 
-            const system_message = this.$store.state.message;  
-            this.newMessage(system_message);  
+            this.setChatBotMessage(enterMsg);  
         });   
         
+        //서버로 부터 다른사람 메시지 받아오기
         this.socket.on("chat-message", (data) => { // when "chat-message" comes from the server             
             console.log('msg received from server',data); 
-            this.newmsg.push(data.data); 
-            data.data.timestamp = moment();     
-            this.newMessage(data.data); 
+            this.setOtherUserMessage(data);
         });
+
         this.socket.on("bot-message", name => { 
             const Msg = name.message; 
-            this.setChatBotMessage(Msg); 
-            const system_message = this.$store.state.message;  
-            this.newMessage(system_message);    
+            this.setChatBotMessage(Msg);    
         });
         this.socket.on("disconnect", name => { 
-            const outMsg = name + '님이 나가셧습니다.';
+            const outMsg = name + '님이 나가셧습니다.~!';
             this.setChatBotMessage(outMsg); 
-            const system_message = this.$store.state.message;   
-            this.newMessage(system_message);  
+            //const system_message = this.$store.state.message;   
+            //this.newMessage(system_message);  
         });   
     },
 }

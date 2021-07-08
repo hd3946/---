@@ -86,10 +86,7 @@ var socket_ids = [];
 function registerUser(socket,nickname){
     if(nickname != undefined) delete socket_ids[nickname];
       socket_ids[socket.id] = nickname;  
-      //console.log(socket_ids);
 }
-
-
 
 
 io.on('connection', (socket) => {
@@ -101,10 +98,8 @@ io.on('connection', (socket) => {
     io.emit('userlist',{
       userid: Object.keys(socket_ids),
       username: Object.values(socket_ids)
-      //test:socket.id
     });    
-    //  변경
-    console.log("몇명이여",socket_ids);
+    //  변경 
     socket.on('changename',(nickname) => {   
       registerUser(socket,nickname.data);
       io.emit('userlist',{
@@ -113,10 +108,12 @@ io.on('connection', (socket) => {
       });
     });
   });
+
   socket.on('typo', async data => {
-    console.log("data",data)
+    console.log("typo",data)
     io.emit('typo',(data));
   }); 
+
   socket.on('disconnect',() => {
       if(socket.id != undefined){
         io.emit('disconnect',socket_ids[socket.id]);    
@@ -124,32 +121,33 @@ io.on('connection', (socket) => {
       }   
   });
   
-  socket.on('chat-message', async data => {
- 
-      data.data.participantId = socket.client.id;        //해당 유저로 변경
-      //console.log("test",data.data.participantId);
+  socket.on('chat-message', async data => { 
+            
+      // 나를 제외한 사용자 메시지 전송     
+      socket.broadcast.emit('chat-message', {
+        content: data.message,
+        id:socket.client.id    //해당 유저로 변경  
+      });   
       
-      socket.broadcast.emit('chat-message', (data));  // 나를 제외한 사용자 메시지 전송           
-      
-      var bot_message  = await tryDF(data.data.content);  // 다이어로그플로우 값 받아오기
-
-      if(data.data.content.includes('#')){   // 봇에게 대화전송
-        if(data.data.content.includes('사진')){   //사진 및 영상 검색  값 보내기       
-          var param_data = await answer(bot_message.parameters);
+      // 다이어로그플로우 값 받아오기
+      const bot_message  = await tryDF(data.message);  
+      // 봇에게 대화전송
+      if(data.message.indexOf('#') != -1){   
+        //사진 및 영상 검색  값 보내기      
+        if(data.message.indexOf('사진') != -1){    
+          const param_data = await answer(bot_message.parameters);
           dbfind(param_data);
-          if(data.data.content.includes('유저')){dbfind('User')}
-             
-          console.log("트위터값",param_data);
+          if(data.message.indexOf('유저') != -1){dbfind('User')} 
+          console.log("사진DB",param_data);
         }    
         io.emit("bot-message", {   
           message:bot_message.message
         });
-     
-
-        if(data.data.content.includes('트위터')){
-          var id_data = twit_id_search(data.data.content);
-          var content_data = await twit(id_data);
-          console.log("트위터값",content_data);
+      
+        if(data.message.indexOf('트위터') != -1){
+          const id_data = twit_id_search(data.message);
+          const content_data = await twit(id_data);
+          console.log("트위터API",content_data);
           io.emit("twit-message", {   
             message: content_data
           }); 
@@ -160,14 +158,13 @@ io.on('connection', (socket) => {
 
 function twit_id_search(data){
   if(data.includes('방탄소년단')){
-    return 'BTS_twt';//BTS_twt
-  //console.log("test,",twit('BTS_twt'));  //JYPETWICE,BTS_twt,ygofficialblink
+    return 'BTS_twt'; //BTS_twt 
   }
   else if(data.includes('트와이스')){
-    return 'JYPETWICE';//JYPETWICE
+    return 'JYPETWICE'; //JYPETWICE
   }
   else if(data.includes('블랙핑크')){
-    return 'ygofficialblink';//ygofficialblink
+    return 'ygofficialblink'; //ygofficialblink
   }
   else{
     return 'error';

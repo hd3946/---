@@ -123,18 +123,9 @@ export default {
                 let inputText = this.textInput
                 if(this.textInput[inputLen-1] == '\n'){
                     inputText = inputText.slice(0, inputLen-1)
-                }
-                const message = {
-                    name:"",
-                    content: inputText, 
-                    participantId: this.$store.state.curr_userID,
-                    timestamp: moment(),
-                    uploaded: false,
-                    viewed: false
-                }
+                } 
                 // 메시지를 새로운 각 객체로 만드는 방법 =>  변경 문제
-                //this.setUserMessage(inputText);
-                //const user_message = this.$store.state.message; 
+                this.setUserMessage(inputText); 
                 
                 this.$store.state.typostate = null;
                 this.textInput = null;
@@ -143,10 +134,8 @@ export default {
                 });
                 //서버로 전송
                 this.socket.emit("chat-message", {
-                    data: message        
-                });
-                 
-                this.newMessage(message);
+                    message: inputText  
+                }); 
                 
             }
         }, 
