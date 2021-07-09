@@ -12,14 +12,6 @@ export default new Vuex.Store({
     curr_userID:'',
     curr_user:'',  //현재 유저        
     messages: [],
-    message:{
-      name: '',
-      content: '', 
-      participantId: 0,
-      timestamp: '',
-      uploaded: false,
-      viewed: false
-    },
     participants: [],
     placeholder: '',
     login:false,
@@ -43,7 +35,7 @@ export default new Vuex.Store({
         viewed : false 
       });
     },
-    //유저 메시지 객체 설정
+    //나의 메시지 객체 설정
     setUserMessage: (state, content) => {
       state.messages.push({
         name : state.curr_user,
@@ -63,6 +55,36 @@ export default new Vuex.Store({
         timestamp : moment(),
         uploaded : false,
         viewed : false 
+      });
+    },
+    //상대방 유저 메시지 객체 설정
+    setTwitMessage: (state, data) => {
+      const db = data.message;
+      state.messages.push({
+        content: db.text, 
+        participantId: 1,
+        timestamp: moment(),
+        created_at: db.created_at,       
+        description: db.description,
+        media_url:db.media_url,
+        url: db.url,
+        username: db.name,
+        profile_image: db.profile_image,
+        viewed: "twit"
+      });
+    },
+    //상대방 유저 메시지 객체 설정
+    setPictureMessage: (state, data) => {
+      const image = [];
+      data.map(x => {
+          image.push(x.URL)
+      });
+      state.messages.push({
+        content: image, 
+        participantId: 1,
+        timestamp: moment(),
+        uploaded: false,
+        viewed: 'photo'
       });
     },
     newMessage: (state, message) => {
@@ -128,10 +150,6 @@ export default new Vuex.Store({
         }
       })
       return curr_participant;
-    },
-    getMessage: (state) => {
-      let now = state.message.name;
-      return now;
     },
     messages: (state) => {
       let messages = [];

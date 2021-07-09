@@ -36,7 +36,7 @@ const searchUser = async (text) => {
     }
       });
 
-    var twitdata = {
+    let twitdata = {
         name: '',
         description: '',
         profile_image: '',
@@ -46,29 +46,29 @@ const searchUser = async (text) => {
         media_url: '',
     }  
     const tdata = tweetRequest.data;
-    console.log("profile_image:",tdata);
+    //console.log("profile_image:",tdata);
 
-    for(var key in tdata){
+    for(let key in tdata){
         //console.log("생성날짜:",tdata[key].created_at);
         twitdata.created_at = tdata[key].created_at;
         //console.log("텍스트:",tdata[key].text);
         twitdata.text = tdata[key].text;
-        var edata = tdata[key].entities.urls
-        var mdata = tdata[key].entities.media   
-        var udata = tdata[key].user
+        let edata = tdata[key].entities.urls
+        let mdata = tdata[key].entities.media   
+        let udata = tdata[key].user
         //console.log("name:",udata.name);
         twitdata.name = udata.name;
         //console.log("description:",udata.description);
         twitdata.description = udata.description;
         //console.log("profile_image:",udata.profile_image_url);
         twitdata.profile_image = udata.profile_image_url;
-        for(var key in edata){
+        for(let i in edata){
             //console.log("링크:",edata[key].url);
-            twitdata.url = edata[key].url;
+            twitdata.url = edata[i].url;
         }
-        for(var key in mdata){
+        for(let i in mdata){
             //console.log("media:",mdata[key].media_url);   //사진
-            twitdata.media_url = mdata[key].media_url;
+            twitdata.media_url = mdata[i].media_url;
         }
     }
     //console.log(twitdata);

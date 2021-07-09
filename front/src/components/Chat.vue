@@ -32,7 +32,6 @@ export default {
             'setParticipants',
             'setMessages',
             'setPlaceholder', 
-            'newMessage',
             'setMyUserId',
             'setChatBotMessage',
             'setOtherUserMessage'
@@ -84,6 +83,7 @@ export default {
             const Msg = name.message; 
             this.setChatBotMessage(Msg);    
         });
+        
         this.socket.on("disconnect", name => { 
             const outMsg = name + '님이 나가셧습니다.~!';
             this.setChatBotMessage(outMsg); 

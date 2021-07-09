@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "kumoh-chat-bot-stgn",
+  "private_key_id": "ec554d5d6067659736e1e591e551b6486feb99e8",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCqZbTlwepywNfC\n+MuMTJmniazCEl1Vv1gs7fmjz8+Ww2rMfdN6Xm9WAnXjIgpJ3z9SFKcsp0UBk7vG\nwtz04WKLxIqT+28qEq+GS5IsJKsKJoiGx4ZaBSDNwxDolqPXdyscuSUCN3IMObjo\n508DsA1pw8bmV4bW/yxRLnQSaCKIdUiXWmXMc/wOiVR86yAG5sWzOOq9TYN4scZZ\nV/5PIQiegMOqWf0gpYVwgRpdDTVP33undK8zu9DEVerNJzuD7VW2p0QT0wvZjeRF\n4nQlezhXwJ51w4lRs2cX3/FRHK9oHStCg90G8TVs6Yd+Mi+XuG7dLb/fDCcGHBIK\nZqCJzTqLAgMBAAECggEAAj3/VU5W425XEyYCp6sloPom8nkuDpCSmOcf3AsSz3oX\n2WBqVljXeSvkJ3MyLpLQbZnZc/d8ik2pSF7KIFjcOcWQTdkCLehwJfOAnq1EjGI8\n1AphH2Mos8oQbY+rhP5OEi77uRe+bHD7VlsnzRbX94aJwNDZ4avYbqC+ATl7fmb6\nIDoN+D4iaBGCFRL18yKjGiCW+Ex+bVRz8NoAm1GxD5fpJW1IF/Cir4vdU2+0dMR6\nqA0ic3VE+qdBSSaKt0ULCv4j9W/bl1T+pkLqpU9Ee/BdfDy22cKM01+yg5TXS9fn\nW4r6em1tOogWQ1pot/9s2qwqMFvsRMe2h8020DIDAQKBgQDlJC+F2ui0QMl5YIC7\nBmL7GYSqvBehDj5YSDwovGLWsru7rYO1DJyslVVl4PmOKF6oBdOswwIfAcnRxXz3\nbHXd28uLFFbjZcY7lFfNqh630jApLcIfZ84BZpedBZPk7nuFoENtk7Fwuh3QS2ow\n+bWPtAOK/sEqjFWwa9oEcYHKIQKBgQC+Xsu2Z8WZ9jDyRNSKgmK3BdnsAWnkxusz\n2PydxIxXoAOGeBefUjlS4xPUW1vEFYCO0rorj3YlLtddCFT8qQUNgPdjfzWprqtd\nOh1FFwF2HU1zm3CZSreYccxG1PB5WeV6vjA5Eiwfvyi27L5XiAXqzuHIIyEbqvLU\nG6gRXQ1nKwKBgGjM0gdwhbnbX8ppvrbLRv39P9YuzMfWkeEiuJERCEuV15MQ2wo1\nSHsOmc5MxRallBVZBOUhE5lG4h1VK8CmFIpx+ngTx2GdrLqXMElaI06DjY9n5D8k\n5O1zFKi2Ylv0Tv5gvDYjtKYQGY6oz1qy+r1M4cnyljp1kMNtsHsTxv7BAoGAQC/U\nPedVT+kbbcRZaW42/IDjjliXrMSJL00dN9C6hRz1s1Qwms5td44K9JHtKfsaAo34\nqZFQg478nGifxyTyCDCQuSJ+JH05WFCs58uu+XU91Rn26CiyKJtOBh/sCO6Pmkgg\nGE4RRI7+mlbOgtLhM9+XbxSxKBQGlg/RJjGawEsCgYA3c/1XvQoG9EJB+KcFF4SX\nruOp90Vgf/wxZztS12OgfzgxYi/EvYsXcesT9C/kU0e7Noy4U8Nvv4U2hwn6bexw\nQ9N/8dMVh3g+LBshwRebhYAPEc6g7cTUNrWxymBGypMphmfQeBf1sXmBTMjdyvmK\nNEIe7iu90JnylBBX8KJPSg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "id-351@kumoh-chat-bot-stgn.iam.gserviceaccount.com",
+  "client_id": "108383128116892946803",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/id-351%40kumoh-chat-bot-stgn.iam.gserviceaccount.com"
+}

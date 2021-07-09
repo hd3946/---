@@ -33,43 +33,13 @@ export default {
             this.$store.state.typostate = data.data;
         });
         //사진 출력
-        this.socket.on('searchidol', db => {
-           
-            const image = [];
-            db.map(x => {
-                image.push(x.URL)
-            });
-
-            const message = {
-                    content: image, 
-                    participantId: 1,
-                    timestamp: moment(),
-                    uploaded: false,
-                    viewed: 'photo'
-                }
-            
-            this.newMessage(message);           
+        this.socket.on('searchidol', db => { 
+            this.setPictureMessage(db);         
         })
         //트위터
-        this.socket.on('twit-message', data => {
-            
-            const db = data.message;
-            const message = {
-                content: db.text, 
-                participantId: 1,
-                timestamp: moment(),
-                created_at: db.created_at,       //추가되는 변수
-                description: db.description,
-                media_url:db.media_url,
-                url: db.url,
-                username: db.name,
-                profile_image: db.profile_image,
-                viewed: "twit"
-            }       
-            //console.log(message);
-            this.newMessage(message);              
-        })
-        moment.locale('pt-br')
+        this.socket.on('twit-message', data => { 
+            this.setTwitMessage(data);      
+        }) 
     },
     computed: {  
         placeholder: function(){
@@ -94,18 +64,18 @@ export default {
     },
     methods: { 
         ...mapMutations([
-            'newMessage',
             'messages',
             'setMessages',
-            'newarrayMessages',
-            'setParticipants',
-            'setUserMessage',
-            'setChatBotMessage'
+            'setTwitMessage',
+            'setParticipants',      //참석자 셋팅 
+            'setUserMessage',       //나의 메시지 객체
+            'setChatBotMessage',    //챗봇 메시지 객체
+            'setTwitMessage',       //트위터 메시지 객체
+            'setPictureMessage'     //사진DB 메시지 객체
         ]),
         fileupload(e){ 
             const formData = new FormData();
-            formData.append('file',this.$refs.file.files[0]);
-            //console.log(this.$refs.file.files[0]);
+            formData.append('file',this.$refs.file.files[0]); 
             try{
                 axios.post('http://localhost:3000/upload', formData);
                 //axios.post('https://fc02ebac.ngrok.io/upload', formData);  //외부 접속        
@@ -124,7 +94,7 @@ export default {
                 if(this.textInput[inputLen-1] == '\n'){
                     inputText = inputText.slice(0, inputLen-1)
                 } 
-                // 메시지를 새로운 각 객체로 만드는 방법 =>  변경 문제
+                //나의 메시지 전송
                 this.setUserMessage(inputText); 
                 
                 this.$store.state.typostate = null;

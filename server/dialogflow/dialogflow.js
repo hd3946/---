@@ -1,6 +1,7 @@
 import fs from 'fs';
 const dialogflow = require("dialogflow");
-const keyFile = JSON.parse(fs.readFileSync("DialogFlow_key.json"));
+const keyFile = JSON.parse(fs.readFileSync("Chat_Bot_key.json"));
+//const keyFile = JSON.parse(fs.readFileSync("DialogFlow_key.json"));
 
 const projectId = keyFile["project_id"];
 const privateKey = keyFile["private_key"];
@@ -8,7 +9,7 @@ const clientEmail = keyFile["client_email"];
 
 //console.log("dialogflow_key확인",projectId, privateKey, clientEmail);
 
-let config = {
+const config = {
   credentials: {
     private_key: privateKey,
     client_email: clientEmail
@@ -33,13 +34,13 @@ async function tryDF(data) {
       }
       console.log("파라미터:",response.queryResult.parameters.fields); 
       if(!isEmpty(response.queryResult.parameters.fields)){
-        if(!isEmpty(response.queryResult.parameters.fields.ImGroup)){
-          parameters_data = response.queryResult.parameters.fields.ImGroup.stringValue;
+        if(!isEmpty(response.queryResult.parameters.fields.idol)){
+          parameters_data = response.queryResult.parameters.fields.idol.stringValue;
         }
       }
       //console.log("PAYLOAD:",isEmpty(parameters_data.fields));  //  값 확인
 
-    var message = {message:"bot: " + response.queryResult.fulfillmentText, parameters: parameters_data};
+    const message = {message:"bot: " + response.queryResult.fulfillmentText, parameters: parameters_data};
     return message;
 }
 
@@ -59,6 +60,7 @@ const request = {
 };
 
   const responses = await sessionClient.detectIntent(request);
+  //console.log("ㅅㄷㄴㅅ", responses);
   return responses[0];
 } 
 

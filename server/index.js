@@ -82,7 +82,7 @@ app.get('/find', function (req, res) {
     })
 });
 
-var socket_ids = [];
+let socket_ids = [];
 function registerUser(socket,nickname){
     if(nickname != undefined) delete socket_ids[nickname];
       socket_ids[socket.id] = nickname;  
@@ -128,52 +128,62 @@ io.on('connection', (socket) => {
         content: data.message,
         id:socket.client.id    //해당 유저로 변경  
       });   
-      
-      // 다이어로그플로우 값 받아오기
-      const bot_message  = await tryDF(data.message);  
-      // 봇에게 대화전송
-      if(data.message.indexOf('#') != -1){   
+ 
+      //// ##############
+      //// 봇에게 대화전송 
+      if(data.message.indexOf('#') != -1){  
+        // 다이어로그플로우 값 받아오기
+        const bot_message  = await tryDF(data.message);  
+        //다이어플로우 봇 대답 전달
+        io.emit("bot-message", {   
+          message:bot_message.message
+        }); 
         //사진 및 영상 검색  값 보내기      
         if(data.message.indexOf('사진') != -1){    
           const param_data = await answer(bot_message.parameters);
-          dbfind(param_data);
-          if(data.message.indexOf('유저') != -1){dbfind('User')} 
+          dbfind(param_data); 
           console.log("사진DB",param_data);
-        }    
-        io.emit("bot-message", {   
-          message:bot_message.message
-        });
-      
-        if(data.message.indexOf('트위터') != -1){
-          const id_data = twit_id_search(data.message);
-          const content_data = await twit(id_data);
-          console.log("트위터API",content_data);
+        }  
+        
+        if(data.message.indexOf('트위터') != -1){ 
+          const idol_para = await twit_id_search (bot_message.parameters);
+          const result = await queryPromise1(bot_message.parameters);
+          console.log("TTT", result); 
+          const content_data = await twit(result);
           io.emit("twit-message", {   
             message: content_data
           }); 
-        }
+        } 
       }  
   });
-});
+}); 
 
-function twit_id_search(data){
-  if(data.includes('방탄소년단')){
-    return 'BTS_twt'; //BTS_twt 
-  }
-  else if(data.includes('트와이스')){
-    return 'JYPETWICE'; //JYPETWICE
-  }
-  else if(data.includes('블랙핑크')){
-    return 'ygofficialblink'; //ygofficialblink
-  }
-  else{
-    return 'error';
-  }
+const queryPromise1 = (data) =>{
+  return new Promise((resolve, reject)=>{
+    const params = data;
+    const stmt = 'SELECT * FROM twitter where name = ?'; 
+    connection.query(stmt,params, (error, results)=>{
+          if(error){
+              return reject(error);
+          }
+          return resolve(results[0].twitterid);
+      });
+  });
+};
+
+async function twit_id_search(data, callback){
+  const params = data;
+  const stmt = 'SELECT * FROM twitter where name = ?'; 
+  connection.query(stmt, params ,function(err, rows , fields) {
+    if (err) throw err;  
+    return rows[0].twitterid;     
+  }); 
+  
 }
 
 async function dbfind(find){
-  var params = find;
-  var stmt = 'SELECT * from Persons WHERE TITLE = ?';
+  let params = find;
+  let stmt = 'SELECT * from Persons WHERE TITLE = ?'; 
   connection.query(stmt, params ,function(err, rows , fields) {
   if (!err){
     console.log('실행', rows);
