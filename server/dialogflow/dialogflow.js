@@ -34,6 +34,7 @@ async function tryDF(data) {
       }
       console.log("파라미터:",response.queryResult.parameters.fields); 
       if(!isEmpty(response.queryResult.parameters.fields)){
+        //파라미터 엔티티 idol 
         if(!isEmpty(response.queryResult.parameters.fields.idol)){
           parameters_data = response.queryResult.parameters.fields.idol.stringValue;
         }

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import moment from 'moment'
 import io from 'socket.io-client';
+import axios from "axios";
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     placeholder: '',
     login:false,
     typostate: '',
-    socket: io('http://localhost:3000/'),
+    socket: io('http://localhost:3000'),
+    host:'http://localhost:3000'
     //socket: io('https://fc02ebac.ngrok.io'), // socket connection to server
   },
   mutations: {
@@ -57,7 +59,7 @@ export default new Vuex.Store({
         viewed : false 
       });
     },
-    //상대방 유저 메시지 객체 설정
+    //트위터 메시지 객체 설정
     setTwitMessage: (state, data) => {
       const db = data.message;
       state.messages.push({
@@ -73,7 +75,7 @@ export default new Vuex.Store({
         viewed: "twit"
       });
     },
-    //상대방 유저 메시지 객체 설정
+    //업로드사진 메시지 객체 설정
     setPictureMessage: (state, data) => {
       const image = [];
       data.map(x => {
@@ -85,7 +87,7 @@ export default new Vuex.Store({
         timestamp: moment(),
         uploaded: false,
         viewed: 'photo'
-      });
+      }); 
     },
     newMessage: (state, message) => {
       //message.timestamp = message.timestamp.toISOString();
@@ -108,6 +110,16 @@ export default new Vuex.Store({
         message.timestamp = moment(message.timestamp).toISOString();
       })
       state.messages = messages;
+    },
+    fileUploadToSever(state, image) { 
+      console.log("이미지값 확인",image);
+      const formData = new FormData();
+      formData.append("file", image);
+      try {  
+        axios.post(state.host + "/upload", formData);
+      } catch (err) {
+        console.log(err);
+      }
     },
     setPlaceholder: (state, placeholder) => {
       state.placeholder = placeholder;

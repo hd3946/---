@@ -33,12 +33,7 @@ export default {
   data() {
     return {
       socket:this.$store.state.socket,
-      message: 'Hello World',
       textInput: '',
-      newmsg:[],
-      id : [],
-      name : [],
-      participants:[],
     };
   },
   created(){

@@ -5,11 +5,11 @@ import upload from "./db/db_path"                     // db 이미지 업로드 
 import cors from "cors";    
 import cookieParser from 'cookie-parser';   
 import tryDF from './dialogflow/dialogflow';          // 다이어플로우 
-import answer from './dialogflow/chatanswer';         // 다이어플로우 db답변
 import twit from './twitter/twitter';
+import path from 'path';
 
-var mysql_dbc = require('./db/database')();   //db 연결 
-var connection = mysql_dbc.init();
+const mysql_dbc = require('./db/database')();   //db 연결 
+const connection = mysql_dbc.init();
 mysql_dbc.test_open(connection);
 
 const app = express();
@@ -21,14 +21,16 @@ const server = app.listen(PORT,function(){
 const io = require('socket.io')(server);
 
 app.use(cors());
-app.use(cookieParser());
+app.use(cookieParser()); 
+
+app.use(express.static(path.join(__dirname, 'uploads')));
 //app.use(express.static('dist'));   //정적 파일 제공 
 
 //이미지파일 업로드
 app.post('/upload', upload.single('file'), function(req, res){
-  var sql = 'INSERT INTO Persons (TITLE,TYPE,URL) VALUES(?, ?, ?)';
-  var ngrok_path = '/uploads/' + req.file.filename
-  var params = ['User', 'picture', ngrok_path];
+  const sql = 'INSERT INTO Persons (TITLE,TYPE,URL) VALUES(?, ?, ?)';
+  const ngrok_path = '/uploads/' + req.file.filename
+  const params = ['User', 'picture', ngrok_path];
   console.log(ngrok_path); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
   console.log(req.file.path); // 콘솔(터미널)을 통해서 req.file Object 내용 확인 가능.
   connection.query(sql, params, function(err, rows, fields){
@@ -42,7 +44,7 @@ app.post('/upload', upload.single('file'), function(req, res){
 
 // 이미지파일 호스팅 로직 
 app.get('/uploads/:name',function (req,res){     
-  var filename = req.params.name;
+  const filename = req.params.name;
   console.log(__dirname+'/uploads/'+filename);
   fs.exists(__dirname+'/uploads/'+filename, function (exists) {
       if (exists) {
@@ -55,24 +57,24 @@ app.get('/uploads/:name',function (req,res){
   })
 });
 
-app.get('/test', function (req, res) {
-res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); 
-res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly'); 
-res.append('Warning', '199 Miscellaneous warning');
-twit('BTS_twt');
-  var stmt = 'SELECT * from Persons';
-  connection.query(stmt, function(err, rows, fields) {
-  if (!err){
-    res.send(rows);
-  }   
-  else
-    console.log('Error while performing Query.', err);
-  })
-});
+// app.get('/test', function (req, res) {
+// res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); 
+// res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly'); 
+// res.append('Warning', '199 Miscellaneous warning');
+// twit('BTS_twt');
+//   const stmt = 'SELECT * from Persons';
+//   connection.query(stmt, function(err, rows, fields) {
+//   if (!err){
+//     res.send(rows);
+//   }   
+//   else
+//     console.log('Error while performing Query.', err);
+//   })
+// });
 
 app.get('/find', function (req, res) {
-    var params = 'Blackpink';
-    var stmt = 'SELECT * from Persons WHERE TITLE = ?';
+  const params = 'Blackpink';
+  const stmt = 'SELECT * from Persons WHERE TITLE = ?';
     connection.query(stmt, params ,function(err, rows , fields) {
     if (!err){
       res.send(rows);
@@ -83,22 +85,24 @@ app.get('/find', function (req, res) {
 });
 
 let socket_ids = [];
+
 function registerUser(socket,nickname){
     if(nickname != undefined) delete socket_ids[nickname];
       socket_ids[socket.id] = nickname;  
 }
 
-
 io.on('connection', (socket) => {
 
   socket.on('newUser',(data) => {
     registerUser(socket,data.data);
-    io.emit('newUser', (socket_ids[socket.id]));           // 새로운 유저 값 보내기
+    // 새로운 유저 값 보내기
+    io.emit('newUser', (socket_ids[socket.id]));          
 
     io.emit('userlist',{
       userid: Object.keys(socket_ids),
       username: Object.values(socket_ids)
-    });    
+    });
+
     //  변경 
     socket.on('changename',(nickname) => {   
       registerUser(socket,nickname.data);
@@ -138,17 +142,14 @@ io.on('connection', (socket) => {
         io.emit("bot-message", {   
           message:bot_message.message
         }); 
+
         //사진 및 영상 검색  값 보내기      
-        if(data.message.indexOf('사진') != -1){    
-          const param_data = await answer(bot_message.parameters);
-          dbfind(param_data); 
-          console.log("사진DB",param_data);
+        if(data.message.indexOf('사진') != -1){     
+          dbfind("User");  
         }  
         
-        if(data.message.indexOf('트위터') != -1){ 
-          const idol_para = await twit_id_search (bot_message.parameters);
-          const result = await queryPromise1(bot_message.parameters);
-          console.log("TTT", result); 
+        if(data.message.indexOf('트위터') != -1){  
+          const result = await queryPromise1(bot_message.parameters); 
           const content_data = await twit(result);
           io.emit("twit-message", {   
             message: content_data
@@ -170,16 +171,6 @@ const queryPromise1 = (data) =>{
       });
   });
 };
-
-async function twit_id_search(data, callback){
-  const params = data;
-  const stmt = 'SELECT * FROM twitter where name = ?'; 
-  connection.query(stmt, params ,function(err, rows , fields) {
-    if (err) throw err;  
-    return rows[0].twitterid;     
-  }); 
-  
-}
 
 async function dbfind(find){
   let params = find;

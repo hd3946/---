@@ -1,6 +1,6 @@
 <template>
 <vueper-slides fractions fade slide-content-outside="top" slide-content-outside-class="max-widthed" fixed-height="500px" :slide-ratio="0.3" >
-  <vueper-slide class="chage" v-for="(slide, i) in this.imagedata.content" :key="i" :title="'# ' + i.toString()" :image="slide"></vueper-slide>
+  <vueper-slide class="chage" v-for="(slide, i) in this.imagedata.content" :key="i" :title="'# ' + i.toString()" :image="iphost + slide"></vueper-slide>
 </vueper-slides>
 </template>
 <script>
@@ -8,7 +8,7 @@ import { VueperSlides, VueperSlide } from 'vueperslides';
 import 'vueperslides/dist/vueperslides.css';
 
     export default {
-		name: 'image',
+		name: 'uploadimage',
 		components: { VueperSlides, VueperSlide },
         props: {
             imagedata: {
@@ -16,13 +16,13 @@ import 'vueperslides/dist/vueperslides.css';
             },
 		},
 		created(){
-			//console.log("test",this.imagedata.content);
+			//console.log("test",this.imagedata.content); 
  		},
 		data(){
 			return {
-			
+				iphost:this.$store.state.host,
 			}
-    	}, 
+    	},  
     }
 </script>
 

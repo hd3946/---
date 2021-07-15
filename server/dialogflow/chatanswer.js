@@ -1,5 +1,4 @@
-function answer(data) {
-  console.log("test",data); 
+function answer(data) { 
   if(data.includes('트와이스'))
         {
           var text = "TWICE";
