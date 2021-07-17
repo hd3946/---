@@ -1,11 +1,12 @@
 <template>
   <div
     ref="containerMessageDisplay"
-    :style="{ background: colors.message.messagesDisplay.bg }"
+    :style="{ background: computedMessagesDisplayBg }"
     class="container-message-display"
     @scroll="updateScrollState"
     @drop.prevent="dropInputImage($event)"
-    @dragover.prevent
+    @dragover.prevent="dragOver($event)"
+    @dragleave.prevent="dragOver($event)"
   >
     <div
       v-for="(message, index) in messages"
@@ -30,7 +31,7 @@
       </div>
       <!-- 트위터 -->
       <div v-else-if="message.viewed == 'twit'" class="w-full h-auto p-2">
-        <twitDisplay :imagedata="message" />
+        <MessagesTwit :imagedata="message" />
       </div>
       <!-- 메시지 -->
       <div
@@ -64,12 +65,12 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import twitDisplay from "./twitDisplay.vue";
-import imageDisplay from "./imageDisplay.vue";
+import MessagesTwit from "./MessagesTwit.vue";
+import imageDisplay from "./MessagesImage.vue";
 export default {
   name: "MessageDisplay",
   components: {
-    twitDisplay,
+    MessagesTwit,
     imageDisplay,
   },
   data() {
@@ -77,6 +78,7 @@ export default {
       updateScroll: false,
       lastMessage: null,
       loading: false,
+      messagesDisplayBg: "#f7f3f3",
     };
   },
   props: {
@@ -92,9 +94,12 @@ export default {
       "getparticipants",
       "getMyUserId",
     ]),
+    computedMessagesDisplayBg() {
+      return this.messagesDisplayBg;
+    },
   },
   created() {
-    console.log("message값확인", this.messages);
+    //console.log("message값확인", this.messages);
   },
   mounted() {
     this.goToBottom();
@@ -123,7 +128,16 @@ export default {
       scrollDiv.scrollTop = scrollDiv.scrollHeight;
       this.updateScroll = false;
     },
-    uploadImage() {},
+    dragOver(e) {
+      if (e.type === "dragover") {
+        this.messagesDisplayBg = "pink";
+        e.target.style.opacity = 0.5;
+      } else {
+        this.messagesDisplayBg = "#f7f3f3";
+        e.target.style.opacity = 1;
+      }
+    },
+    //이미지 드래그 업로드
     dropInputImage(event) {
       let file = Array.from(event.dataTransfer.files, (v) => v)[0];
       console.log(file);
@@ -136,7 +150,8 @@ export default {
 <style scoped>
 .container-message-display {
   flex: 1;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
+  -ms-overflow-style: none;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -213,5 +228,8 @@ export default {
   100% {
     transform: rotate(360deg);
   }
+}
+::-webkit-scrollbar {
+  display: none;
 }
 </style>

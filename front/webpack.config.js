@@ -1,7 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const ServiceWorkerWebpackPlugin= require('serviceworker-webpack-plugin');
-var path = require('path',);
+const path = require('path',);
 
 module.exports = {
     entry: './src/main.js',

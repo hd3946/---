@@ -45,8 +45,7 @@ const searchUser = async (text) => {
         url: '',
         media_url: '',
     }  
-    const tdata = tweetRequest.data;
-    //console.log("profile_image:",tdata);
+    const tdata = tweetRequest.data; 
 
     for(let key in tdata){
         //console.log("생성날짜:",tdata[key].created_at);

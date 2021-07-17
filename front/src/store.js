@@ -154,7 +154,7 @@ export default new Vuex.Store({
       return now;
     },
     //해당 아이디 => 닉네임 찾기
-    getParticipantById: (state) => (id) => {
+    getParticipantById: (state) => (id) => {  
       let curr_participant = '';
       state.participants.forEach(participant => {
         if(participant.id == id){
@@ -162,6 +162,18 @@ export default new Vuex.Store({
         }
       })
       return curr_participant;
+    },
+    // 이미지url 한글 인코딩 , 서버에 저장된 사진 SHOW
+    chageEncoding: (state) => (image) => {   
+      let url = encodeURI(image.URL);
+      if(image.TITLE === 'User'){
+        return state.host + url;
+      } 
+      return url;
+    },
+    setAltImg:() => (e) => {
+      //@error="$event.target.src = '/image/imagetest.gif'"
+      return e.target.src = "/image/imagetest.gif";
     },
     messages: (state) => {
       let messages = [];

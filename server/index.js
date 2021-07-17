@@ -57,32 +57,31 @@ app.get('/uploads/:name',function (req,res){
   })
 });
 
-// app.get('/test', function (req, res) {
-// res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); 
-// res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly'); 
-// res.append('Warning', '199 Miscellaneous warning');
-// twit('BTS_twt');
-//   const stmt = 'SELECT * from Persons';
-//   connection.query(stmt, function(err, rows, fields) {
-//   if (!err){
-//     res.send(rows);
-//   }   
-//   else
-//     console.log('Error while performing Query.', err);
-//   })
-// });
-
-app.get('/find', function (req, res) {
-  const params = 'Blackpink';
-  const stmt = 'SELECT * from Persons WHERE TITLE = ?';
-    connection.query(stmt, params ,function(err, rows , fields) {
-    if (!err){
-      res.send(rows);
-    }   
-    else
-      console.log('Error while performing Query.', err);
-    })
+app.get('/imageshow', function (req, res) {
+res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>']); 
+res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly'); 
+res.append('Warning', '199 Miscellaneous warning'); 
+  const stmt = 'SELECT * from Persons';
+  connection.query(stmt, function(err, rows, fields) {
+  if (!err){
+    res.send(rows);
+  }   
+  else
+    console.log('Error while performing Query.', err);
+  })
 });
+
+// app.get('/find', function (req, res) {
+//   const params = 'Blackpink';
+//   const stmt = 'SELECT * from Persons WHERE TITLE = ?';
+//     connection.query(stmt, params ,function(err, rows , fields) {
+//     if (!err){
+//       res.send(rows);
+//     }   
+//     else
+//       console.log('Error while performing Query.', err);
+//     })
+// });
 
 let socket_ids = [];
 

@@ -1,25 +1,24 @@
 <template>
   <div class="w-full h-full">
-    <Header class="message-header" />
+    <MessageHeader class="message-header" />
     <MessageButton :colors="colors" class="message-button" />
     <MessageDisplay :colors="colors" class="message-display" />
     <MessageInput class="message-input" />
   </div>
 </template>
 <script>
-import Header from "./Header.vue";
+import MessageHeader from "./MessageHeader.vue";
 import MessageDisplay from "./MessageDisplay.vue";
 import MessageInput from "./MessageInput.vue";
 import MessageButton from "./MessageButton.vue";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import store from "../store";
-import * as moment from "moment";
 
 export default {
   name: "Chat",
   store,
   components: {
-    Header,
+    MessageHeader,
     MessageDisplay,
     MessageInput,
     MessageButton,
